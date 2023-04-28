@@ -140,3 +140,8 @@ p.author a {
   font-weight: 700;
   color: #fff;
 }
+
+p.error {
+  color: white;
+  font-size: 30px;
+}
