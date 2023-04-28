@@ -16,6 +16,15 @@ export interface FetchDataType {
   data: MovieData[] | null;
 }
 
+/**
+ * This is a TypeScript function that uses the useState and useEffect hooks to fetch movie data from an
+ * API and return it as an object with isLoading, error, and data properties.
+ * @param {string} params - a string parameter that is used to construct the API endpoint URL for
+ * fetching data. It is passed as a dependency to the useEffect hook, so that the fetchMovie function
+ * is called whenever the value of params changes.
+ * @returns The `useFetch` function returns an object with three properties: `isLoading`, `error`, and
+ * `data`. These properties are of type `boolean`, `boolean`, and `MovieData[] | null`, respectively.
+ */
 export const useFetch = (params: string): FetchDataType => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);

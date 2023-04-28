@@ -12,6 +12,14 @@ interface Movie {
   Poster: string;
 }
 
+/**
+ * This is a functional component that renders a list of movies using data from a context and a custom
+ * ItemMovie component.
+ * @returns The `Movies` component is being returned, which renders a `div` element with a class of
+ * "movies-content". Inside the `div`, there is a ternary operator that checks if `isLoading` is false
+ * and if `data` exists. If both conditions are true, it maps through the `data` array and renders an
+ * `ItemMovie` component for each item in the array. The
+ */
 const Movies = () => {
   const { isLoading, data } = useContext(DataContext);
   return (

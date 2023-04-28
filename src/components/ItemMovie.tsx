@@ -1,12 +1,12 @@
 import DefaultImage from "../media/noimage.webp";
 import { Link } from "react-router-dom";
-
 /**
  * The ItemMovie function is a React component that displays information about a movie, including its
  * title, type, year, and poster image.
- * @param  - The above code defines a React functional component called `ItemMovie` that takes in an
- * object of props with the following properties:
+ * @param  - The code defines a React functional component called `ItemMovie` that takes in the
+ * following props:
  */
+
 interface ItemMovieProps {
   id: string;
   title: string;
