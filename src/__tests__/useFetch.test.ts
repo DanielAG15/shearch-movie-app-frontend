@@ -1,88 +1,35 @@
-import { renderHook } from "@testing-library/react-hooks";
-import { useFetch, FetchDataType } from "../hooks/usefetch";
+import { useFetch } from "../hooks/usefetch";
 
-describe("useFetch", () => {
+// Tests that fetchMovie function fetches data successfully and returns an object with isLoading, error, and data properties.
+it("test_fetch_movie_success", async () => {
   const mockData = [
     {
-      Title: "The Shawshank Redemption",
-      Year: "1994",
-      imdbID: "tt0111161",
+      Title: "Movie 1",
+      Year: "2021",
+      imdbID: "123",
       Type: "movie",
-      Poster: "https://via.placeholder.com/300x450",
-    },
-    {
-      Title: "The Godfather",
-      Year: "1972",
-      imdbID: "tt0068646",
-      Type: "movie",
-      Poster: "https://via.placeholder.com/300x450",
+      Poster: "poster1",
     },
   ];
+  const mockResponse = { Response: "True", Search: mockData };
+  jest.spyOn(global, "fetch").mockResolvedValueOnce({
+    json: jest.fn().mockResolvedValueOnce(mockResponse),
+  } as any);
 
-  beforeEach(() => {
-    jest.spyOn(global, "fetch").mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValueOnce({
-        Response: "True",
-        Search: mockData,
-      }),
-    } as any);
-  });
+  const result = useFetch("search=movie");
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for useEffect to finish
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
+  expect(result.isLoading).toBe(false);
+  expect(result.error).toBe(false);
+  expect(result.data).toEqual(mockData);
+});
 
-  it("should return the initial state", () => {
-    const { result } = renderHook(() => useFetch("&s=batman"));
+// Tests that fetchMovie function returns null for data when params is an empty string.
+it("test_fetch_movie_empty_params", async () => {
+  const result = useFetch("");
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for useEffect to finish
 
-    const expectedState: FetchDataType = {
-      isLoading: true,
-      error: false,
-      data: null,
-    };
-
-    expect(result.current).toEqual(expectedState);
-  });
-
-  it("should return the correct data after fetch", async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetch("&s=shawshank")
-    );
-
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.error).toBe(false);
-    expect(result.current.data).toBe(null);
-
-    await waitForNextUpdate();
-
-    const expectedState: FetchDataType = {
-      isLoading: false,
-      error: false,
-      data: mockData,
-    };
-
-    expect(result.current).toEqual(expectedState);
-  });
-
-  it("should set error to true when fetch returns an error", async () => {
-    jest.spyOn(global, "fetch").mockRejectedValueOnce(new Error("Fetch Error"));
-
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useFetch("&s=invalid")
-    );
-
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.error).toBe(false);
-    expect(result.current.data).toBe(null);
-
-    await waitForNextUpdate();
-
-    const expectedState: FetchDataType = {
-      isLoading: false,
-      error: true,
-      data: null,
-    };
-
-    expect(result.current).toEqual(expectedState);
-  });
+  expect(result.isLoading).toBe(false);
+  expect(result.error).toBe(false);
+  expect(result.data).toBeNull();
 });

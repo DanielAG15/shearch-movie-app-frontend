@@ -26,7 +26,7 @@ export interface FetchDataType {
  * `data`. These properties are of type `boolean`, `boolean`, and `MovieData[] | null`, respectively.
  */
 export const useFetch = (params: string): FetchDataType => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true as boolean);
   const [error, setError] = useState<boolean>(false);
   const [data, setData] = useState<MovieData[] | null>(null);
 
